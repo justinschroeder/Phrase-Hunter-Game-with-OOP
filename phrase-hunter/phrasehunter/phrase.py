@@ -10,6 +10,7 @@ class Phrase():
                 print(letter, end=' ')
             else:
                 print('_', end=' ')
+        print('\n')
 
     def check_letter(self, letter):
         if letter in self.phrase:
