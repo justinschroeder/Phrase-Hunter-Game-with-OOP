@@ -40,6 +40,7 @@ class Game:
             guess = input('Guess a Letter:    ')
             print('\n')
             if len(guess) > 1 or guess.isalpha() is False:
+                # using isalpha() here instead of a list of letters per Mel R's feedback
                 print('That is not a valid guess! Please guess again.\n')
                 self.missed += 1
                 self.guesses.append(guess.lower())
