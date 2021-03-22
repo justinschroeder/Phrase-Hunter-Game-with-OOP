@@ -4,7 +4,7 @@ import random
 class Game:
     def __init__(self):
         self.missed = 0
-        self.phrases = ['a dime a dozen', 'cut to the chase', 'put a sock in it', 'fish out of water', 'a chip on your shoulder']
+        self.phrases = [Phrase('A Dime a Dozen'), Phrase('Cut to the Chase'), Phrase('Put a Sock In It'), Phrase('Fish Out of Water'), Phrase('A Chip On Your Shoulder')]
         self.active_phrase = None
         self.guesses = []
 
@@ -19,7 +19,7 @@ class Game:
         self.game_over()
 
     def get_random_phrase(self):
-        return Phrase(random.choice(self.phrases).lower())
+        return random.choice(self.phrases)
 
     def welcome(self):
         welcome = 'WELCOME TO THE PHRASE GUESSING GAME'
@@ -39,27 +39,27 @@ class Game:
         while True:
             guess = input('Guess a Letter:    ')
             print('\n')
-            valid_guesses = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
-            if len(guess) > 1 or guess not in valid_guesses:
+            if len(guess) > 1 or guess.isalpha() is False:
                 print('That is not a valid guess! Please guess again.\n')
                 self.missed += 1
+                self.guesses.append(guess.lower())
                 print(f'You have {5-self.missed} out of 5 tries remaining!\n')
-                continue
+                break
             elif guess in self.guesses:
                 self.missed += 1
-                self.guesses.append(guess)
+                self.guesses.append(guess.lower())
                 print('Oops! You already guess that letter.\n')
                 print(f'You have {5-self.missed} out of 5 tries remaining!\n')
                 break
-            elif guess not in self.active_phrase.phrase:
+            elif self.active_phrase.check_letter(guess) is False:
                 self.missed += 1
-                self.guesses.append(guess)
+                self.guesses.append(guess.lower())
                 print('Incorrect! That letter is not in the phrase.\n')
                 print(f'You have {5-self.missed} out of 5 tries remaining!\n')
                 break
             else:
                 print('Good job!\n')
-                self.guesses.append(guess)
+                self.guesses.append(guess.lower())
                 break
 
     def game_over(self):
@@ -67,21 +67,27 @@ class Game:
             print(f'Congratulations! You won the game! It only took you {len(self.guesses)} total guesses!\n')
         else:
             print('Game over - You ran out of incorrect guesses. Better luck next time!\n')
-        new_game = input('Would you like to play again? Y/N  >>> ')
-        if new_game.lower() == 'y':
-            print('\n\n\n')
-            self.new_game()
-            try:
-                self.start()
-            except IndexError:
-                print('You have guesses all the available phrases! Good job!\n')
-                print('Thanks for playing! See you next time.')
-        else:
-            print('\nThanks for playing! See you next time.')
+        while True:
+            new_game = input('Would you like to play again? Y/N  >>> ')
+            if new_game.lower() == 'y':
+                print('\n\n\n')
+                self.new_game()
+                try:
+                    self.start()
+                except IndexError:
+                    print('You have guesses all the available phrases! Good job!\n')
+                    print('Thanks for playing! See you next time.')
+                break
+            elif new_game.lower() == 'n':
+                print('\nThanks for playing! See you next time.')
+                break
+            else:
+                print('Not a valid option...')
+                continue
 
     def new_game(self):
         if self.active_phrase.check_complete(self.guesses):
-            self.phrases.remove(self.active_phrase.phrase)
+            self.phrases.remove(self.active_phrase)
         self.missed = 0
         self.active_phrase = None
         self.guesses = []

@@ -1,6 +1,6 @@
 class Phrase():
     def __init__(self, phrase):
-        self.phrase = phrase
+        self.phrase = phrase.lower()
 
     def display(self, guesses):
         for letter in self.phrase:
@@ -13,7 +13,7 @@ class Phrase():
         print('\n')
 
     def check_letter(self, letter):
-        if letter in self.phrase:
+        if letter.lower() in self.phrase:
             return True
         else:
             return False
@@ -23,12 +23,3 @@ class Phrase():
             if letter not in guesses and letter != ' ':
                 return False
         return True
-
-
-if __name__ == '__main__':
-    phrase = Phrase('hello world')
-    letter = 'o'
-    print(phrase.check_letter(letter))
-    guesses = ['h','e','l','o','w','r','d']
-    print(phrase.check_complete(guesses))
-    phrase.display(guesses)
