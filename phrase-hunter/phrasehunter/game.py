@@ -4,7 +4,13 @@ import random
 class Game:
     def __init__(self):
         self.missed = 0
-        self.phrases = [Phrase('A Dime a Dozen'), Phrase('Cut to the Chase'), Phrase('Put a Sock In It'), Phrase('Fish Out of Water'), Phrase('A Chip On Your Shoulder')]
+        self.phrases = [
+            Phrase('A Dime a Dozen'),
+            Phrase('Cut to the Chase'),
+            Phrase('Put a Sock In It'),
+            Phrase('Fish Out of Water'),
+            Phrase('A Chip On Your Shoulder')
+            ]
         self.active_phrase = None
         self.guesses = []
 
